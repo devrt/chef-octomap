@@ -17,13 +17,13 @@
 # limitations under the License.
 #
 
-include_recipe "build-essential"
-include_recipe "git"
-include_recipe "apt"
-#include_recipe "cmake"
+include_recipe 'build-essential'
+include_recipe 'git'
+include_recipe 'apt'
+# include_recipe 'cmake'
 
 pkgs = value_for_platform_family(
-  ["debian"] => %w{cmake libqt4-dev libqt4-opengl-dev libqglviewer-qt4-dev}
+  ['debian'] => %w(cmake libqt4-dev libqt4-opengl-dev libqglviewer-qt4-dev)
                                  )
 
 pkgs.each do |pkg|
@@ -33,13 +33,13 @@ pkgs.each do |pkg|
 end
 
 git "#{Chef::Config['file_cache_path']}/octomap" do
-  repository "https://github.com/OctoMap/octomap.git"
-  revision "HEAD"
+  repository 'https://github.com/OctoMap/octomap.git'
+  revision 'HEAD'
   action :sync
-  notifies :run, "bash[compile_octomap]", :immediately
+  notifies :run, 'bash[compile_octomap]', :immediately
 end
 
-bash "compile_octomap" do
+bash 'compile_octomap' do
   cwd "#{Chef::Config['file_cache_path']}/octomap"
   code <<-EOH
       cmake .
